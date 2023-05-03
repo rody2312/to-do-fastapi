@@ -1,26 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import TaskService from '../services/TaskService';
+import React from "react";
+import { VStack, ListItem, HStack, IconButton, Text, List } from "@chakra-ui/react";
+import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import TaskService from "../services/TaskService";
 
-const TaskList = () => {
-  const [tasks, setTasks] = useState([]);
+const TaskList = ({tasks, setTasks}) => {
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await TaskService.getTasks();
-      setTasks(result);
-    };
-    fetchData();
-  }, []);
+  const handleEdit = (task) => {
+    // Implementa la lógica para editar la tarea
+  };
+
+  const handleDelete = async (taskId) => {
+    await TaskService.deleteTask(taskId);
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  };
 
   return (
-    <div>
-      <h2>Lista de tareas</h2>
-      <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>{task.title}</li>
-        ))}
-      </ul>
-    </div>
+    <VStack align="stretch" spacing={4}>
+      <Text className="text-xl font-semibold mb-4">Lista de tareas</Text>
+      <List>
+        {tasks &&
+          tasks.map((task) => (
+            <ListItem key={task.id} bg="gray.200" p={4} borderRadius="md" margin={2}>
+              <HStack justifyContent="space-between">
+                <Text>{task.title}</Text>
+                <HStack>
+                  <IconButton
+                    aria-label="Edit task"
+                    icon={<EditIcon />}
+                    onClick={() => handleEdit(task)}
+                    colorScheme="teal"
+                  />
+                  <IconButton
+                    aria-label="Delete task"
+                    icon={<DeleteIcon />}
+                    onClick={() => handleDelete(task.id)}
+                    colorScheme="red"
+                  />
+                </HStack>
+              </HStack>
+            </ListItem>
+          ))}
+      </List>
+    </VStack>
   );
 };
 
