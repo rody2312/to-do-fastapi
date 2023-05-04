@@ -10,10 +10,10 @@ const App = () => {
     <Box bg="gray.100" minH="100vh" p={6}>
       <Box maxW="md" mx="auto" bg="white" p={6} boxShadow="md">
         <h1 className="text-3xl font-semibold mb-6">Administrador de tareas</h1>
-        <TaskForm tasks={tasks} setTasks={setTasks} />
+        <TaskForm />
       </Box>
       <Box maxW="md" mx="auto" mt={5} bg="white" p={6} boxShadow="md">
-        <TaskList tasks={tasks} setTasks={setTasks} />
+        <TaskList />
       </Box>
     </Box>
   );

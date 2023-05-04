@@ -9,29 +9,24 @@ import {
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import TaskService from "../services/TaskService";
+import { useDispatch } from "react-redux";
+import { createTask } from "../features/taskSlice";
 
-const TaskForm = ({ tasks, setTasks }) => {
+const TaskForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [titleError, setTitleError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await TaskService.getTasks();
-      setTasks(result);
-    };
-    fetchData();
-  }, []);
+  const dispatch = useDispatch()
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const newTask = await TaskService.createTask({ title, description });
+      dispatch(createTask({ title, description }));
       setTitle("");
       setDescription("");
-      setTasks([...tasks, newTask]);
     }
   };
 
