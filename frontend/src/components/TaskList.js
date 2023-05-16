@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
-import { VStack, ListItem, HStack, IconButton, Text, List } from "@chakra-ui/react";
-import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+import { VStack, ListItem, HStack, IconButton, Text, List, Button } from "@chakra-ui/react";
+import { EditIcon, DeleteIcon, ViewIcon } from "@chakra-ui/icons";
 import TaskService from "../services/TaskService";
 import { useDispatch, useSelector } from "react-redux";
 import { edit, fetchTasks, remove } from "../features/taskSlice";
+import SubTaskModal from "./SubTaskModal";
 
 const TaskList = () => {
+  const [isSubTaskModalOpen, setIsSubTaskModalOpen] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
 
   const tasks = useSelector((state) => state.tasks.value)
   const dispatch = useDispatch()
@@ -14,16 +17,10 @@ const TaskList = () => {
     dispatch(fetchTasks())
   }, [dispatch])
 
-  console.log(tasks)
-  
-  /* const handleEdit = (task) => {
-    // Implementa la lógica para editar la tarea
+  const handleOpenSubTaskModal = (taskId) => {
+    setSelectedTaskId(taskId);
+    setIsSubTaskModalOpen(true);
   };
-
-  const handleDelete = async (taskId) => {
-    await TaskService.deleteTask(taskId);
-    setTasks(tasks.filter((task) => task.id !== taskId));
-  }; */
 
   return (
     <VStack align="stretch" spacing={4}>
@@ -36,9 +33,9 @@ const TaskList = () => {
                 <Text>{task.title}</Text>
                 <HStack>
                   <IconButton
-                    aria-label="Edit task"
-                    icon={<EditIcon />}
-                    onClick={() => dispatch(edit(task))}
+                    aria-label="List subtasks"
+                    icon={<ViewIcon />}
+                    onClick={() => handleOpenSubTaskModal(task.id)}
                     colorScheme="teal"
                   />
                   <IconButton
@@ -52,6 +49,11 @@ const TaskList = () => {
             </ListItem>
           ))}
       </List>
+      <SubTaskModal
+        isOpen={isSubTaskModalOpen}
+        onClose={() => setIsSubTaskModalOpen(false)}
+        taskId={selectedTaskId}
+      />
     </VStack>
   );
 };

@@ -21,7 +21,7 @@ class Task(TaskCreate):
 # Este esquema incluirá todos los campos necesarios para crear una subtarea.
 class SubTaskCreate(BaseModel):
     title: str
-    description: str
+    task_id: int
     due_date: datetime = None
 
 # Se crea un esquema para una subtarea completa. 

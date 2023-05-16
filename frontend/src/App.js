@@ -4,7 +4,6 @@ import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
 
   return (
     <Box bg="gray.100" minH="100vh" p={6}>

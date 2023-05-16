@@ -10,7 +10,6 @@ class SubTask(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    description = Column(String)
     completed = Column(Boolean, default=False)
     due_date = Column(DateTime, nullable=True)
     task_id = Column(Integer, ForeignKey('tasks.id'))

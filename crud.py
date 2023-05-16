@@ -38,7 +38,7 @@ def delete_task(db: Session, task_id: int):
 def create_subtask(db: Session, subtask: schemas.SubTaskCreate, task_id: int):
     # Crea una nueva subtarea en la base de datos.
     # La subtarea se crea a partir del esquema SubTaskCreate y se le añade el ID de la tarea principal.
-    db_subtask = models.SubTask(**subtask.dict(), task_id=task_id)
+    db_subtask = models.SubTask(title=subtask.title,due_date=subtask.due_date, task_id=task_id)
     db.add(db_subtask)
     db.commit()
     db.refresh(db_subtask)

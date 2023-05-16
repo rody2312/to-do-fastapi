@@ -14,13 +14,13 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/", response_model=schemas.SubTask)
-def create_subtask(subtask: schemas.SubTaskCreate, db: Session = Depends(get_db)):
-    return crud.create_subtask(db=db, subtask=subtask)
+@router.post("/{task_id}", response_model=schemas.SubTask)
+def create_subtask(task_id: int, subTask: schemas.SubTaskCreate, db: Session = Depends(get_db)):
+    return crud.create_subtask(db=db, subtask=subTask, task_id=task_id)
 
-@router.get("/", response_model=List[schemas.SubTask])
-def read_subtasks(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    subtasks = crud.get_subtasks(db, skip=skip, limit=limit)
+@router.get("/{task_id}", response_model=List[schemas.SubTask])
+def read_subtasks(task_id:int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    subtasks = crud.get_subtasks(db, task_id, skip=skip, limit=limit)
     return subtasks
 
 @router.get("/{subtask_id}", response_model=schemas.SubTask)
