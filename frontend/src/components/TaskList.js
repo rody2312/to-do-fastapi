@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { VStack, ListItem, HStack, IconButton, Text, List, Button } from "@chakra-ui/react";
+import { VStack, ListItem, HStack, IconButton, Text, List, Button, Checkbox } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, ViewIcon } from "@chakra-ui/icons";
 import TaskService from "../services/TaskService";
 import { useDispatch, useSelector } from "react-redux";
-import { edit, fetchTasks, remove } from "../features/taskSlice";
+import { edit, fetchTasks, remove, updateTask } from "../features/taskSlice";
 import SubTaskModal from "./SubTaskModal";
 
 const TaskList = () => {
@@ -22,6 +22,7 @@ const TaskList = () => {
     setIsSubTaskModalOpen(true);
   };
 
+
   return (
     <VStack align="stretch" spacing={4}>
       <Text className="text-xl font-semibold mb-4">Lista de tareas</Text>
@@ -30,6 +31,11 @@ const TaskList = () => {
           tasks.map((task) => (
             <ListItem key={task.id} bg="gray.200" p={4} borderRadius="md" margin={2}>
               <HStack justifyContent="space-between">
+                <Checkbox size="lg" colorScheme="green" borderColor="blackAlpha.400" bgColor="blue.100" isChecked={task.completed} onChange={(e) => {
+                    const updatedTask = { ...task, completed: !task.completed };
+                    dispatch(updateTask(updatedTask));
+                    console.log("updatedTask:", updatedTask);
+                }} />
                 <Text>{task.title}</Text>
                 <HStack>
                   <IconButton

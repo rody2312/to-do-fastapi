@@ -8,8 +8,9 @@ import {
   Stack,
   FormLabel,
   FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createTask } from "../features/taskSlice";
 
 const TaskForm = () => {
@@ -19,6 +20,23 @@ const TaskForm = () => {
   const [descriptionError, setDescriptionError] = useState("");
 
   const dispatch = useDispatch()
+  
+  const message = useSelector(state => state.tasks.message);
+  const toast = useToast()
+
+  //Muestra mensaje
+  useEffect(() => {
+    if (message) {
+      toast({
+        title: "Mensaje",
+        description: message,
+        position: "top-right",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [message, toast]); // Se ejecutará cada vez que 'message' cambie
 
 
   const handleSubmit = async (e) => {

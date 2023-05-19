@@ -16,9 +16,20 @@ export const createTask = createAsyncThunk(
   }
 );
 
+//Actualizar tarea, especificamente el checkbox
+export const updateTask = createAsyncThunk(
+  "tasks/updateTask",
+  async (taskData, { dispatch }) => {
+    const updatedTask = await TaskService.updateTask(taskData);
+    dispatch(edit({ id: updatedTask.id, data: updatedTask }));
+  }
+);
+
+
 const initialState = {
   value: [],
   status: "idle",
+  message : null,
 };
 
 export const taskSlice = createSlice({
@@ -35,12 +46,20 @@ export const taskSlice = createSlice({
       state.value = state.value.filter((task) => task.id !== taskId);
     },
     edit: (state, action) => {
-      state.value += action.payload;
-    },
+      const { id, data } = action.payload;
+      const taskIndex = state.value.findIndex((task) => task.id === id);
+      if (taskIndex !== -1) {
+        state.value[taskIndex] = { ...state.value[taskIndex], ...data };
+      }
+    },    
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchTasks.fulfilled, (state, action) => {
+    builder
+    .addCase(fetchTasks.fulfilled, (state, action) => {
       state.value = action.payload;
+    })
+    .addCase(createTask.fulfilled, (state, action) => {
+      state.message = 'Tarea creada exitosamente!';
     });
   },
 });

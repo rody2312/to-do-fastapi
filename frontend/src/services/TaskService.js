@@ -21,10 +21,10 @@ const TaskService = {
     return response.data;
   },
 
-  updateTask: async (id, task) => {
-    const response = await apiClient.put(`/tasks/${id}`, task);
+  updateTask: async (task) => {
+    const response = await apiClient.patch(`/tasks/${task.id}`, task);
     return response.data;
-  },
+  },  
 
   deleteTask: async (id) => {
     await apiClient.delete(`/tasks/${id}`);

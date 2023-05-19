@@ -1,11 +1,12 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 
 # Se crea un esquema para cuando se crea una nueva tarea. 
-# Este esquema incluirá todos los campos necesarios para crear una tarea.
+# Este esquema incluirá todos los campos necesarios para crear una tarea con validaciones
 class TaskCreate(BaseModel):
-    title: str
-    description: str
+    title: str = Field(min_length=4, max_length=30)
+    description: str = Field()
+    completed: bool
     due_date: datetime = None
 
 # Se crea un esquema para una tarea completa. 
@@ -20,7 +21,7 @@ class Task(TaskCreate):
 # Se crea un esquema para cuando se crea una nueva subtarea. 
 # Este esquema incluirá todos los campos necesarios para crear una subtarea.
 class SubTaskCreate(BaseModel):
-    title: str
+    title: str = Field()
     task_id: int
     due_date: datetime = None
 
