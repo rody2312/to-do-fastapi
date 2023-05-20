@@ -55,13 +55,13 @@ def get_subtask(db: Session, subtask_id: int):
     # Obtiene una subtarea específica por su ID.
     return db.query(models.SubTask).filter(models.SubTask.id == subtask_id).first()
 
-def update_subtask(db: Session, subtask_id: int, subtask_update: schemas.SubTaskCreate, completed: bool):
+def update_subtask(db: Session, subtask_id: int, subtask: schemas.SubTaskCreate):
     # Actualiza una subtarea específica.
     # Podemos actualizar cualquier campo de la subtarea y marcarla como completada o no completada.
-    db_subtask = db.query(models.SubTask).filter(models.SubTask.id == subtask_id).first()
-    for key, value in subtask_update.dict().items():
-        setattr(db_subtask, key, value)
-    db_subtask.completed = completed
+    db_subtask = db.query(models.SubTask).filter(models.SubTask.id == subtask_id).one()
+    for var, value in vars(subtask).items():
+        if value is not None:
+            setattr(db_subtask, var, value)
     db.commit()
     db.refresh(db_subtask)
     return db_subtask

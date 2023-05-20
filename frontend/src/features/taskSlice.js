@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import TaskService from "../services/TaskService";
 
+// Obtener y exportar la busqueda de una tarea especifica por ID
+export const selectTaskById = (state, taskId) => state.tasks.value.find(task => task.id === taskId);
+
+
 //Obtener todas las tareas de forma asincrona
 export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
   const tasks = await TaskService.getTasks();

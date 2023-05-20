@@ -30,19 +30,9 @@ def read_subtask(subtask_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="SubTask not found")
     return subtask
 
-@router.put("/{subtask_id}", response_model=schemas.SubTask)
-def update_subtask(
-    subtask_id: int,
-    subtask_update: schemas.SubTaskCreate,
-    completed: bool,
-    db: Session = Depends(get_db),
-):
-    subtask = crud.get_subtask(db, subtask_id=subtask_id)
-    if subtask is None:
-        raise HTTPException(status_code=404, detail="SubTask not found")
-    return crud.update_subtask(
-        db=db, subtask_id=subtask_id, subtask_update=subtask_update, completed=completed
-    )
+@router.patch("/{subtask_id}", response_model=schemas.SubTask)
+def update_task(subtask_id: int, subtask: schemas.SubTaskCreate, db: Session = Depends(get_db)):
+    return crud.update_subtask(db=db, subtask_id=subtask_id, subtask=subtask)
 
 @router.delete("/{subtask_id}")
 def delete_subtask(subtask_id: int, db: Session = Depends(get_db)):

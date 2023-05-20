@@ -21,12 +21,12 @@ const SubTaskService = {
   },
 
   updateSubTask: async (id, task) => {
-    const response = await apiClient.put(`/tasks/${id}`, task);
+    const response = await apiClient.patch(`/subtasks/${id}`, task);
     return response.data;
   },
 
   deleteSubTask: async (id) => {
-    await apiClient.delete(`/tasks/${id}`);
+    await apiClient.delete(`/subtasks/${id}`);
   },
 };
 

@@ -6,7 +6,7 @@ from datetime import datetime
 class TaskCreate(BaseModel):
     title: str = Field(min_length=4, max_length=30)
     description: str = Field()
-    completed: bool
+    completed: bool = Field(default=False)
     due_date: datetime = None
 
 # Se crea un esquema para una tarea completa. 
@@ -23,6 +23,7 @@ class Task(TaskCreate):
 class SubTaskCreate(BaseModel):
     title: str = Field()
     task_id: int
+    completed: bool = Field(default=False)
     due_date: datetime = None
 
 # Se crea un esquema para una subtarea completa. 

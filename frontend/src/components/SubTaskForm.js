@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { FormControl, FormLabel, Input, Button, FormErrorMessage } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { FormControl, FormLabel, Input, Button, FormErrorMessage, useToast } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
 import { createSubTask } from "../features/subTaskSlice";
 
 const SubTaskForm = ({ taskId }) => {
@@ -27,6 +27,24 @@ const SubTaskForm = ({ taskId }) => {
     }
     return isValid;
   };
+
+  const message = useSelector(state => state.subTasks.message);
+  const toast = useToast()
+
+  //Muestra mensaje
+  useEffect(() => {
+    if (message) {
+      toast({
+        title: "Mensaje",
+        description: message,
+        position: "top-right",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [message, toast]); // Se ejecutará cada vez que 'message' cambie
+
 
   return (
     <form onSubmit={handleSubmit}>

@@ -16,9 +16,20 @@ export const createSubTask = createAsyncThunk(
   }
 );
 
+//Actualizar subtarea de forma asincrona
+export const updateSubTask = createAsyncThunk(
+  "subTasks/updateSubTask",
+  async (subTaskData, { dispatch }) => {
+    const updatedSubTask = await SubTaskService.updateSubTask(subTaskData.id, subTaskData);
+    dispatch(edit(updatedSubTask));
+  }
+);
+
+
 const initialState = {
   value: [],
   status: "idle",
+  message : null,
 };
 
 export const subTaskSlice = createSlice({
@@ -35,17 +46,31 @@ export const subTaskSlice = createSlice({
       state.value = state.value.filter((subTask) => subTask.id !== subTaskId);
     },
     edit: (state, action) => {
-      state.value += action.payload;
+      const updatedSubTask = action.payload;
+      const index = state.value.findIndex(subTask => subTask.id === updatedSubTask.id);
+    
+      if (index !== -1) {
+        state.value[index] = updatedSubTask;
+      }
     },
+    clearMessage: (state) => {
+      state.message = '';
+    },
+    
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchSubTasks.fulfilled, (state, action) => {
+    builder
+    .addCase(fetchSubTasks.fulfilled, (state, action) => {
       state.value = action.payload;
+    })
+    .addCase(createSubTask.fulfilled, (state, action) => {
+      state.message = 'Sub Tarea creada exitosamente!';
     });
+    
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { add, remove, edit } = subTaskSlice.actions;
+export const { add, remove, edit, clearMessage } = subTaskSlice.actions;
 
 export default subTaskSlice.reducer;

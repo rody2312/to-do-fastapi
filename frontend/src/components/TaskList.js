@@ -5,6 +5,7 @@ import TaskService from "../services/TaskService";
 import { useDispatch, useSelector } from "react-redux";
 import { edit, fetchTasks, remove, updateTask } from "../features/taskSlice";
 import SubTaskModal from "./SubTaskModal";
+import { clearMessage } from "../features/subTaskSlice";
 
 const TaskList = () => {
   const [isSubTaskModalOpen, setIsSubTaskModalOpen] = useState(false);
@@ -22,6 +23,11 @@ const TaskList = () => {
     setIsSubTaskModalOpen(true);
   };
 
+  const handleCloseSubTaskModal = () => {
+    dispatch(clearMessage());
+    setIsSubTaskModalOpen(false);
+  }
+
 
   return (
     <VStack align="stretch" spacing={4}>
@@ -34,7 +40,6 @@ const TaskList = () => {
                 <Checkbox size="lg" colorScheme="green" borderColor="blackAlpha.400" bgColor="blue.100" isChecked={task.completed} onChange={(e) => {
                     const updatedTask = { ...task, completed: !task.completed };
                     dispatch(updateTask(updatedTask));
-                    console.log("updatedTask:", updatedTask);
                 }} />
                 <Text>{task.title}</Text>
                 <HStack>
@@ -57,7 +62,7 @@ const TaskList = () => {
       </List>
       <SubTaskModal
         isOpen={isSubTaskModalOpen}
-        onClose={() => setIsSubTaskModalOpen(false)}
+        onClose={handleCloseSubTaskModal}
         taskId={selectedTaskId}
       />
     </VStack>
