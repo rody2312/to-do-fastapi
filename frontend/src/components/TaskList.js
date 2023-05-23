@@ -3,17 +3,24 @@ import { VStack, ListItem, HStack, IconButton, Text, List, Button, Checkbox } fr
 import { EditIcon, DeleteIcon, ViewIcon } from "@chakra-ui/icons";
 import TaskService from "../services/TaskService";
 import { useDispatch, useSelector } from "react-redux";
-import { edit, fetchTasks, remove, updateTask } from "../features/taskSlice";
+import { edit, fetchTasks, remove, selectTaskById, updateTask } from "../features/taskSlice";
 import SubTaskModal from "./SubTaskModal";
 import { clearMessage } from "../features/subTaskSlice";
+import ConfirmationDialog from "./message/ConfirmationDialog";
 
 const TaskList = () => {
   const [isSubTaskModalOpen, setIsSubTaskModalOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [deleteTaskId, setDeleteTaskId] = useState(null);
+  const onClose = () => setIsOpen(false);
+
   const tasks = useSelector((state) => state.tasks.value)
   const dispatch = useDispatch()
 
+  const task = useSelector(state => selectTaskById(state, deleteTaskId));
+  
   useEffect(() => {
     dispatch(fetchTasks())
   }, [dispatch])
@@ -26,6 +33,17 @@ const TaskList = () => {
   const handleCloseSubTaskModal = () => {
     dispatch(clearMessage());
     setIsSubTaskModalOpen(false);
+  }
+
+  //Funciones para el mensaje de eliminación
+  const handleDelete = (taskId) => {
+    setDeleteTaskId(taskId);
+    setIsOpen(true);
+  }
+
+  const confirmDelete = () => {
+    dispatch(remove(deleteTaskId));
+    setIsOpen(false);
   }
 
 
@@ -52,7 +70,7 @@ const TaskList = () => {
                   <IconButton
                     aria-label="Delete task"
                     icon={<DeleteIcon />}
-                    onClick={() => dispatch(remove(task.id))}
+                    onClick={() => handleDelete(task.id)}
                     colorScheme="red"
                   />
                 </HStack>
@@ -64,6 +82,13 @@ const TaskList = () => {
         isOpen={isSubTaskModalOpen}
         onClose={handleCloseSubTaskModal}
         taskId={selectedTaskId}
+      />
+      <ConfirmationDialog
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirm={confirmDelete}
+        title={`Eliminar Tarea: ${task ? task.title : ''}`}
+        message="¿Estás seguro? No podrás deshacer esta acción después."
       />
     </VStack>
   );

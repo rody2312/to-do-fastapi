@@ -1,16 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { VStack, ListItem, HStack, IconButton, Text, List, Checkbox } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSubTasks, remove, updateSubTask } from "../features/subTaskSlice";
+import { fetchSubTasks, remove, selectSubTaskById, updateSubTask } from "../features/subTaskSlice";
+import ConfirmationDialog from "./message/ConfirmationDialog";
 
 const SubTaskList = ({ taskId }) => {
   const subTasks = useSelector((state) => state.subTasks.value)
   const dispatch = useDispatch()
+  
+  const [isOpen, setIsOpen] = useState(false);
+  const [deleteSubTaskId, setDeleteSubTaskId] = useState(null);
+  const onClose = () => setIsOpen(false);
+
+  const subTask = useSelector(state => selectSubTaskById(state, deleteSubTaskId));
 
   useEffect(() => {
     dispatch(fetchSubTasks(taskId))
   }, [dispatch, taskId])
+
+
+  //Funciones para el mensaje de eliminación
+  const handleDelete = (subTaskId) => {
+    setDeleteSubTaskId(subTaskId);
+    setIsOpen(true);
+  }
+
+  const confirmDelete = () => {
+    dispatch(remove(deleteSubTaskId));
+    setIsOpen(false);
+  }
   
   return (
     <VStack align="stretch" spacing={4}>
@@ -33,11 +52,7 @@ const SubTaskList = ({ taskId }) => {
                   <IconButton
                     aria-label="Delete subtask"
                     icon={<DeleteIcon />}
-                    onClick={() => {
-                      if (window.confirm("¿Estás seguro de que quieres eliminar esta subtarea?")) {
-                        dispatch(remove(subTask.id))
-                      }
-                    }}
+                    onClick={() => handleDelete(subTask.id)}
                     colorScheme="red"
                   />
                 </HStack>
@@ -45,6 +60,15 @@ const SubTaskList = ({ taskId }) => {
             </ListItem>
           )) : <p className="m-4">No hay subtareas, puedes crearlos en el registro</p>}
       </List>
+
+      {/* Mensaje de confirmación para eliminar subtarea */}
+      <ConfirmationDialog
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirm={confirmDelete}
+        title={`Eliminar Tarea: ${subTask ? subTask.title : ''}`}
+        message="¿Estás seguro? No podrás deshacer esta acción después."
+      />
     </VStack>
   );
 };

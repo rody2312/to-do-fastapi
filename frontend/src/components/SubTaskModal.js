@@ -1,4 +1,4 @@
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Divider } from "@chakra-ui/react";
+import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Divider, Text, VStack } from "@chakra-ui/react";
 import SubTaskForm from "./SubTaskForm";
 import SubTaskList from "./SubTaskList";
 import { useSelector } from "react-redux";
@@ -14,6 +14,14 @@ const SubTaskModal = ({ isOpen, onClose, taskId }) => {
       <ModalHeader>Subtareas de "{task ? task.title : ''}"</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+          {task && (
+            <VStack spacing={2} align="start" mb={4}>
+              <Text fontWeight="bold">Descripción de tarea:</Text>
+              <Text>{task.description}</Text>
+            </VStack>
+          )}
+          <Divider my={6} />
+          <Text className="mb-4" fontWeight="bold">Creación de subtareas</Text>
           <SubTaskForm taskId={taskId} />
           <Divider my={6} />
           <SubTaskList taskId={taskId} />
