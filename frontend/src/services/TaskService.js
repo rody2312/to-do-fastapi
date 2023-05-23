@@ -7,7 +7,6 @@ const apiClient = axios.create({
 const TaskService = {
   getTasks: async () => {
     const response = await apiClient.get("/tasks/");
-    console.log(response)
     return response.data;
   },
 
