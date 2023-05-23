@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, Heading, Wrap, WrapItem } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 

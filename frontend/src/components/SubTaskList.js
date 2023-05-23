@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { VStack, ListItem, HStack, IconButton, Text, List, Checkbox } from "@chakra-ui/react";
-import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSubTasks, remove, selectSubTaskById, updateSubTask } from "../features/subTaskSlice";
 import ConfirmationDialog from "./message/ConfirmationDialog";

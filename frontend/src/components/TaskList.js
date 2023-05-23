@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { VStack, ListItem, HStack, IconButton, Text, List, Button, Checkbox } from "@chakra-ui/react";
-import { EditIcon, DeleteIcon, ViewIcon } from "@chakra-ui/icons";
-import TaskService from "../services/TaskService";
+import { VStack, ListItem, HStack, IconButton, Text, List, Checkbox } from "@chakra-ui/react";
+import { DeleteIcon, ViewIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { edit, fetchTasks, remove, selectTaskById, updateTask } from "../features/taskSlice";
+import { fetchTasks, remove, selectTaskById, updateTask } from "../features/taskSlice";
 import SubTaskModal from "./SubTaskModal";
 import { clearMessage } from "../features/subTaskSlice";
 import ConfirmationDialog from "./message/ConfirmationDialog";

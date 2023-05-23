@@ -1,4 +1,4 @@
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Divider, Text, VStack } from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Divider, Text, VStack } from "@chakra-ui/react";
 import SubTaskForm from "./SubTaskForm";
 import SubTaskList from "./SubTaskList";
 import { useSelector } from "react-redux";
