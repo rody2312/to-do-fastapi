@@ -3,13 +3,20 @@ from routers import tasks, subtasks
 
 from fastapi.middleware.cors import CORSMiddleware
 
+from dotenv import load_dotenv
+import os
+
+# Cargar variables de entorno desde el archivo .env
+load_dotenv()
+
+
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000"
-    ],  # Cambia esto por la URL de tu frontend si es diferente
+        os.getenv("ALLOWED_ORIGIN")
+    ], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
