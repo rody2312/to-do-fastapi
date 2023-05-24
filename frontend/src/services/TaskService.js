@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:8000", // Cambia esto por la URL de tu API FastAPI
+  baseURL: process.env.REACT_APP_API_URL, // Cambia esto por la URL de tu API FastAPI
 });
 
 const TaskService = {
